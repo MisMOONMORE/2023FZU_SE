@@ -7,7 +7,7 @@ import os
 baseUrl = "https://www.luogu.com.cn/problem/P"
 savePath = "D:\\Programms My\\SWE\\Problem\\"
 minn = 1001
-maxn = 1010
+maxn = 1010             #最大题号
 
 def main():
     print("计划爬取到P{}".format(maxn))
@@ -34,7 +34,7 @@ def main():
 def getHTML(url):
     headers = {
         "user-agent": "Mozilla / 5.0(Windows NT 10.0;Win64;x64) AppleWebKit / 537.36(KHTML, likeGecko) Chrome / 85.0.4183.121 Safari / 537.36",
-        "cookie": "__client_id=d670d45cce0e21ad3e7f30f352487ddb8028277b; _uid=1016745"
+        "cookie": "__client_id=d670d45cce0e21ad3e7f30f352487ddb8028277b; _uid=1096745"
     }
     request = urllib.request.Request(url = url,headers = headers)
     response = urllib.request.urlopen(request)
@@ -48,8 +48,6 @@ def getHTML(url):
 def getMD(html):
     bs = bs4.BeautifulSoup(html,"html.parser")
     core = bs.select("article")[0]
-    title = bs.select("title")[0].text.strip()
-    md = "# " + title
     md = str(core)
     md = re.sub("<h1>","# ",md)
     md = re.sub("<h2>","## ",md)
@@ -57,10 +55,10 @@ def getMD(html):
     md = re.sub("</?[a-zA-Z]+[^<>]*>","",md)
     return md
 
-def saveData(data, i):
-    filename = "P" + str(i) + " - " + data + ".md"
+def saveData(data,filename):
+    
 
-    cfilename = os.path.join(savePath, filename)
+    cfilename = savePath + filename
     file = open(cfilename,"w",encoding="utf-8")
     for d in data:
         file.writelines(d)
